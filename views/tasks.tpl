@@ -7,6 +7,7 @@
   }
   .completed {text-decoration: line-through;}
   .description { padding-left:8px }
+  
 </style>
 
 <div class="w3-row">
@@ -126,14 +127,14 @@ function save_edit(event) {
   id = event.target.id.replace("save_edit-","");
   console.log("desc to save = ",$("#input-" + id).val())
   if ((id != "today") & (id != "tomorrow")) {
-    api_update_task({'id':id, description:$("#input-" + id).val()},
+    api_update_task({'id':id, description:$("#input-" + id).val(), completeBy:$("#timeInput-" + id).val()},
                     function(result) { 
                       console.log(result);
                       get_current_tasks();
                       $("#current_input").val("")
                     } );
   } else {
-    api_create_task({description:$("#input-" + id).val(), list:id},
+    api_create_task({description:$("#input-" + id).val(), list:id, completeBy:$("#timeInput-" + id).val()},
                     function(result) { 
                       console.log(result);
                       get_current_tasks();
@@ -180,10 +181,12 @@ function display_task(x) {
     t = '<tr id="task-'+x.id+'" class="task">' +
         '  <td style="width:36px"></td>' +  
         '  <td><span id="editor-'+x.id+'">' + 
-        '        <input id="input-'+x.id+'" style="height:22px" class="w3-input" '+ 
-        '          type="text" autofocus placeholder="Add an item..."/>'+
-        '      </span>' + 
-        '  </td>' +
+    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:60%; margin-right: 9%;" class="w3-input" '+ 
+    '          type="text" autofocus placeholder="Add an item..."/>'+
+    '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:30%;" class="w3-input" '+ 
+    '          type="time" value="00:00"/>'+
+    '      </span>' +  
+    '  </td>' +
         '  <td style="width:72px">' +
         '    <span id="filler-'+x.id+'" class="material-icons">more_horiz</span>' + 
         '    <span id="save_edit-'+x.id+'" hidden class="save_edit material-icons">done</span>' + 
@@ -195,7 +198,9 @@ function display_task(x) {
         '  <td><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons">' + arrow + '</span></td>' +
         '  <td><span id="description-'+x.id+'" class="description' + completed + '">' + x.description + '</span>' + 
         '      <span id="editor-'+x.id+'" hidden>' + 
-        '        <input id="input-'+x.id+'" style="height:22px" class="w3-input" type="text" autofocus/>' +
+        '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" type="text" autofocus/>' +
+        '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" '+ 
+        '          type="time"/>'+
         '      </span>' + 
         '  </td>' +
         '  <td>' +

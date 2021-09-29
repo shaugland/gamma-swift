@@ -10,8 +10,8 @@ from bottle import route, get, put, post, delete
 # web page template processor
 from bottle import template
 
-# development server
-from bottle import run 
+## development server
+from bottle import run, default_app 
 
 # ---------------------------
 # web application routes
@@ -55,7 +55,7 @@ def create_task():
     try:
         data = request.json
         for key in data.keys():
-            assert key in ["description","list"], f"Illegal key '{key}'"
+            assert key in ["description","list", "completeBy"], f"Illegal key '{key}'"
         assert type(data['description']) is str, "Description is not a string."
         assert len(data['description'].strip()) > 0, "Description is length zero."
         assert data['list'] in ["today","tomorrow"], "List must be 'today' or 'tomorrow'"
@@ -82,7 +82,7 @@ def update_task():
     try:
         data = request.json
         for key in data.keys():
-            assert key in ["id","description","completed","list"], f"Illegal key '{key}'"
+            assert key in ["id","description","completed","list", "completeBy"], f"Illegal key '{key}'"
         assert type(data['id']) is int, f"id '{id}' is not int"
         if "description" in request:
             assert type(data['description']) is str, "Description is not a string."
@@ -125,7 +125,7 @@ def delete_task():
     response.headers['Content-Type'] = 'application/json'
     return json.dumps({'success': True})
 
-application = default_app()
+    application = default_app()
 if __name__ == "__main__":
-    
+
     run(host='0.0.0.0', port=8080, debug=True)
