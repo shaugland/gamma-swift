@@ -68,6 +68,7 @@ def create_task():
             "time": time.time(),
             "description":data['description'].strip(),
             "list":data['list'],
+            "completeBy":data['completeBy'],
             "completed":False
         })
     except Exception as e:

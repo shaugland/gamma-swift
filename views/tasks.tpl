@@ -120,6 +120,9 @@ function edit_task(event) {
   $("#undo_edit-"+id).prop('hidden', false);
   // set the editing flag
   $("#current_input").val(event.target.id)
+  // set the time TODO: fix this pleeease
+  //$("#timeInput-" + id).val($("#time-"+id).val())
+  //$("#time-"+id).hide();
 }
 
 function save_edit(event) {
@@ -196,11 +199,11 @@ function display_task(x) {
   } else {
     t = '<tr id="task-'+x.id+'" class="task">' + 
         '  <td><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons">' + arrow + '</span></td>' +
-        '  <td><span id="description-'+x.id+'" class="description' + completed + '">' + x.description + '</span>' + 
+        '  <td><span id="description-'+x.id+'" class="description' + completed + '">' + x.description + '</span>' + '<span id="time-' + x.id + '"> | ' + (x.completeBy ? x.completeBy : '') + '</span>' + 
         '      <span id="editor-'+x.id+'" hidden>' + 
         '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" type="text" autofocus/>' +
         '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" '+ 
-        '          type="time"/>'+
+        '          type="time" value="' + (x.completeBy ?? '00:00') + ':00:00"/>'+
         '      </span>' + 
         '  </td>' +
         '  <td>' +
