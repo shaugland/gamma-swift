@@ -2,11 +2,11 @@
 % include("banner.tpl")
 
 <style>
-  .save_edit, .undo_edit, .move_task, .description, .edit_task, .delete_task {
+  .save_edit, .undo_edit, .move_task, .description, .edit_task, .delete_task, .time {
     cursor: pointer;
   }
   .completed {text-decoration: line-through;}
-  .description { padding-left:8px }
+  .description {padding-left:8px;}
   
 </style>
 
@@ -30,6 +30,20 @@
 </div>
 <input id="current_input" hidden value=""/> 
 <script>
+
+// Change from 24hr to 12hr
+// Takes time in the form of 00:00
+
+function change_time(time){
+  if(time != null && time != ''){
+    var suffix = (time[0] + time[1]) >= 12 ? "PM" : "AM";
+
+    // This is a weird way to do this. Fix if you have a better idea
+    newTime = ((parseInt(String(time[0] + time[1])) + 11) % 12 + 1) + time.slice(2,5) + ' ' + suffix;
+    return newTime;
+  }
+  return time;
+}
 
 /* API CALLS */
 
@@ -93,7 +107,13 @@ function move_task(event) {
 function complete_task(event) {
   if ($("#current_input").val() != "") { return }
   console.log("complete item", event.target.id )
-  id = event.target.id.replace("description-","");
+
+  // Allows ability to click on time to complete
+  if(event.target.id.includes("description-"))
+    id = event.target.id.replace("description-","");
+  else if(event.target.id.includes("time-"))
+    id = event.target.id.replace("time-","");
+
   completed = event.target.className.search("completed") > 0;
   console.log("updating :",{'id':id, 'completed':completed==false})
   api_update_task({'id':id, 'completed':completed==false}, 
@@ -114,6 +134,9 @@ function edit_task(event) {
   $("#description-"+id).prop('hidden', true);
   $("#edit_task-"+id).prop('hidden', true);
   $("#delete_task-"+id).prop('hidden', true);
+  $("#time-"+id).prop('hidden', true);
+  $("#line-"+id).prop('hidden', true);
+  
   // show the editor
   $("#editor-"+id).prop('hidden', false);
   $("#save_edit-"+id).prop('hidden', false);
@@ -161,6 +184,8 @@ function undo_edit(event) {
     $("#filler-"+id).prop('hidden', false);
     $("#edit_task-"+id).prop('hidden', false);
     $("#delete_task-"+id).prop('hidden', false);
+    $("#time-"+id).prop('hidden', false);
+    $("#line-"+id).prop('hidden', false);
   }
   // set the editing flag
   $("#current_input").val("")
@@ -184,10 +209,10 @@ function display_task(x) {
     t = '<tr id="task-'+x.id+'" class="task">' +
         '  <td style="width:36px"></td>' +  
         '  <td><span id="editor-'+x.id+'">' + 
-    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:60%; margin-right: 9%;" class="w3-input" '+ 
+    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:55%; margin-right: 9%;" class="w3-input" '+ 
     '          type="text" autofocus placeholder="Add an item..."/>'+
     '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:30%;" class="w3-input" '+ 
-    '          type="time" value="00:00"/>'+
+    '          type="time"/>'+
     '      </span>' +  
     '  </td>' +
         '  <td style="width:72px">' +
@@ -199,11 +224,13 @@ function display_task(x) {
   } else {
     t = '<tr id="task-'+x.id+'" class="task">' + 
         '  <td><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons">' + arrow + '</span></td>' +
-        '  <td><span id="description-'+x.id+'" class="description' + completed + '">' + x.description + '</span>' + '<span id="time-' + x.id + '"> | ' + (x.completeBy ? x.completeBy : '') + '</span>' + 
+        '  <td><span id="description-'+x.id+'" class="description' + completed + '">' + x.description + '</span>' + 
+        '  <span id="line-'+x.id+'">' + (x.completeBy ? ' - ' : '') +'</span>'  +
+        '      <span id="time-' + x.id + '" class="description '+ completed + '" style="padding-left:0px;"' + '">' + (x.completeBy ? change_time(x.completeBy) : '') + '</span>' + 
         '      <span id="editor-'+x.id+'" hidden>' + 
         '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" type="text" autofocus/>' +
         '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" '+ 
-        '          type="time" value="' + (x.completeBy ?? '00:00') + ':00:00"/>'+
+        '          type="time" value="' + (x.completeBy ?? '00:00') + '"/>'+
         '      </span>' + 
         '  </td>' +
         '  <td>' +
