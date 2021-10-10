@@ -6,4 +6,4 @@
     <span class="w3-large w3-button w3-margin w3-round-large w3-blue">Log Out</span>
   </span>
 </div>
-
+<audio src="/static/City Ambience.mp3" autoplay loop></audio>

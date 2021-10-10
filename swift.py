@@ -5,7 +5,7 @@
 from bottle import request, response
 
 # HTML request types
-from bottle import route, get, put, post, delete
+from bottle import route, get, put, post, delete, static_file
 
 # web page template processor
 from bottle import template
@@ -125,6 +125,10 @@ def delete_task():
     # return 200 Success
     response.headers['Content-Type'] = 'application/json'
     return json.dumps({'success': True})
+
+@route("/static/<filepath:path>")
+def mp3(filepath):
+    return static_file(filepath, root="static")
 
 application = default_app()
 if __name__ == "__main__":
