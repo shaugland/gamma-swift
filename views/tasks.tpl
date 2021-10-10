@@ -11,7 +11,7 @@
 </style>
 
 <div class="w3-row">
-  <div class="w3-col s6 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
+  <div class="w3-col s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
     <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
       <h1><i>Today</i></h1>
     </div>
@@ -19,7 +19,7 @@
     </table>
     <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
   </div>
-  <div class="w3-col s6 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
+  <div class="w3-col s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
     <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
       <h1><i>Tomorrow</i></h1>
     </div>
@@ -27,7 +27,17 @@
     </table>
     <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
   </div>
+  <div class="w3-col s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
+    <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
+      <h1><i>Someday</i></h1>
+    </div>
+    <table  id="task-list-someday" class="w3-table">
+    </table>
+    <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
+  </div>
 </div>
+</div>
+
 <input id="current_input" hidden value=""/> 
 <script>
 
@@ -96,7 +106,10 @@ function move_task(event) {
   if ($("#current_input").val() != "") { return }
   console.log("move item", event.target.id )
   id = event.target.id.replace("move_task-","");
-  target_list = event.target.className.search("today") > 0 ? "tomorrow" : "today";
+  if (id.includes("move_task2")) id = event.target.id.replace("move_task2-","");
+  target_list = event.target.className.search("today") > 0 || event.target.className.search("someday") > 0 ? "tomorrow" : "today";
+  if (event.target.className.search("forward") > 0)
+    target_list = "someday";
   api_update_task({'id':id, 'list':target_list},
                   function(result) { 
                     console.log(result);
@@ -152,7 +165,7 @@ function save_edit(event) {
   console.log("save item", event.target.id)
   id = event.target.id.replace("save_edit-","");
   console.log("desc to save = ",$("#input-" + id).val())
-  if ((id != "today") & (id != "tomorrow")) {
+  if ((id != "today") & (id != "tomorrow") & (id != "someday")) {
     api_update_task({'id':id, description:$("#input-" + id).val(), completeBy:$("#timeInput-" + id).val()},
                     function(result) { 
                       console.log(result);
@@ -205,7 +218,7 @@ function delete_task(event) {
 function display_task(x) {
   arrow = (x.list == "today") ? "arrow_forward" : "arrow_back";
   completed = x.completed ? " completed" : "";
-  if ((x.id == "today") | (x.id == "tomorrow")) {
+  if ((x.id == "today") | (x.id == "tomorrow") | (x.id == "someday")) {
     t = '<tr id="task-'+x.id+'" class="task">' +
         '  <td style="width:36px"></td>' +  
         '  <td><span id="editor-'+x.id+'">' + 
@@ -233,6 +246,8 @@ function display_task(x) {
         '          type="time" value="' + (x.completeBy ?? '00:00') + '"/>'+
         '      </span>' + 
         '  </td>' +
+          (x.list == "tomorrow" ? '<td><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_forward</span></td>' : '') + 
+
         '  <td>' +
         '    <span id="edit_task-'+x.id+'" class="edit_task '+x.list+' material-icons">edit</span>' +
         '    <span id="delete_task-'+x.id+'" class="delete_task material-icons">delete</span>' +
@@ -251,6 +266,7 @@ function get_current_tasks() {
   // display the new task editor
   display_task({id:"today", list:"today"})
   display_task({id:"tomorrow", list:"tomorrow"})
+  display_task({id:"someday", list:"someday"})
   // display the tasks
   api_get_tasks(function(result){
     for (const task of result.tasks) {
@@ -258,7 +274,7 @@ function get_current_tasks() {
     }
     // wire the response events 
     $(".move_task").click(move_task);
-    $(".description").click(complete_task)
+    $(".description").click(complete_task);
     $(".edit_task").click(edit_task);
     $(".save_edit").click(save_edit);
     $(".undo_edit").click(undo_edit);
