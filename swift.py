@@ -55,9 +55,10 @@ def create_task():
     try:
         data = request.json
         for key in data.keys():
-            assert key in ["description","list", "completeBy"], f"Illegal key '{key}'"
+            assert key in ["description","list", "completeBy", "tag"], f"Illegal key '{key}'"
         assert type(data['description']) is str, "Description is not a string."
         assert len(data['description'].strip()) > 0, "Description is length zero."
+        assert type(data['tag']) is str, "Tag is not a string."
         assert data['list'] in ["today","tomorrow", "someday"], "List must be 'today' or 'tomorrow'"
     except Exception as e:
         response.status="400 Bad Request:"+str(e)
@@ -69,6 +70,7 @@ def create_task():
             "description":data['description'].strip(),
             "list":data['list'],
             "completeBy":data['completeBy'],
+            "tag":data['tag'].strip(),
             "completed":False
         })
     except Exception as e:
@@ -83,7 +85,7 @@ def update_task():
     try:
         data = request.json
         for key in data.keys():
-            assert key in ["id","description","completed","list", "completeBy"], f"Illegal key '{key}'"
+            assert key in ["id","description","completed","list", "completeBy", "tag"], f"Illegal key '{key}'"
         assert type(data['id']) is int, f"id '{id}' is not int"
         if "description" in request:
             assert type(data['description']) is str, "Description is not a string."
@@ -92,6 +94,8 @@ def update_task():
             assert type(data['completed']) is bool, "Completed is not a bool."
         if "list" in request:
             assert data['list'] in ["today","tomorrow", "someday"], "List must be 'today' or 'tomorrow'"
+        if "tag" in request:
+            assert type(data['tag']) is str, "Tag is not string."
     except Exception as e:
         response.status="400 Bad Request:"+str(e)
         return
