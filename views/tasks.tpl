@@ -142,9 +142,11 @@ function edit_task(event) {
   id = event.target.id.replace("edit_task-","");
   // move the text to the input editor
   $("#input-"+id).val($("#description-"+id).text());
+  $("#tagInput-"+id).val($("#tag-"+id).text());
   // hide the text display
   $("#move_task-"+id).prop('hidden', true);
   $("#description-"+id).prop('hidden', true);
+  $("#tag-"+id).prop('hidden', true);
   $("#edit_task-"+id).prop('hidden', true);
   $("#delete_task-"+id).prop('hidden', true);
   $("#time-"+id).prop('hidden', true);
@@ -166,14 +168,14 @@ function save_edit(event) {
   id = event.target.id.replace("save_edit-","");
   console.log("desc to save = ",$("#input-" + id).val())
   if ((id != "today") & (id != "tomorrow") & (id != "someday")) {
-    api_update_task({'id':id, description:$("#input-" + id).val(), completeBy:$("#timeInput-" + id).val()},
+    api_update_task({'id':id, description:$("#input-" + id).val(), completeBy:$("#timeInput-" + id).val(), tag:$("#tagInput-" + id).val()},
                     function(result) { 
                       console.log(result);
                       get_current_tasks();
                       $("#current_input").val("")
                     } );
   } else {
-    api_create_task({description:$("#input-" + id).val(), list:id, completeBy:$("#timeInput-" + id).val()},
+    api_create_task({description:$("#input-" + id).val(), list:id, completeBy:$("#timeInput-" + id).val(), tag:$("#tagInput-" + id).val()},
                     function(result) { 
                       console.log(result);
                       get_current_tasks();
@@ -186,6 +188,7 @@ function undo_edit(event) {
   id = event.target.id.replace("undo_edit-","")
   console.log("undo",[id])
   $("#input-" + id).val("");
+  $("#tagInput-" +id).val("");
   if ((id != "today") & (id != "tomorrow")) {
     // hide the editor
     $("#editor-"+id).prop('hidden', true);
@@ -194,6 +197,7 @@ function undo_edit(event) {
     // show the text display
     $("#move_task-"+id).prop('hidden', false);
     $("#description-"+id).prop('hidden', false);
+    $("#tag-"+id).prop('hidden', false);
     $("#filler-"+id).prop('hidden', false);
     $("#edit_task-"+id).prop('hidden', false);
     $("#delete_task-"+id).prop('hidden', false);
@@ -222,10 +226,12 @@ function display_task(x) {
     t = '<tr id="task-'+x.id+'" class="task">' +
         '  <td style="width:36px"></td>' +  
         '  <td><span id="editor-'+x.id+'">' + 
-    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:55%; margin-right: 9%;" class="w3-input" '+ 
+    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:55%; margin-right: 1%;" class="w3-input" '+ 
     '          type="text" autofocus placeholder="Add an item..."/>'+
-    '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:30%;" class="w3-input" '+ 
+    '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:27%; margin-right:1%" class="w3-input" '+ 
     '          type="time"/>'+
+    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:13%;" class="w3-input" '+ 
+    '          type="text" autofocus placeholder="Tag..."/>'+
     '      </span>' +  
     '  </td>' +
         '  <td style="width:72px">' +
@@ -242,9 +248,11 @@ function display_task(x) {
         '      <span id="time-' + x.id + '" class="description '+ completed + '" style="padding-left:0px;"' + '">' + (x.completeBy ? change_time(x.completeBy) : '') + '</span>' + 
         '      <span id="editor-'+x.id+'" hidden>' + 
         '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" type="text" autofocus/>' +
-        '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" '+ 
+        '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:27%;" class="w3-input" '+ 
         '          type="time" value="' + (x.completeBy ?? '00:00') + '"/>'+
+        '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:13%;" class="w3-input" type="text" autofocus/>' +
         '      </span>' + 
+        '  <span id="tag-'+x.id+'" class="description' + completed + '">' + '[' + x.tag + ']' + '</span>' + 
         '  </td>' +
           (x.list == "tomorrow" ? '<td><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_forward</span></td>' : '') + 
 
