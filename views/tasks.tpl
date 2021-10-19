@@ -11,7 +11,7 @@
 </style>
 
 <div class="w3-row">
-  <div class="w3-col s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
+  <div class="w3-row s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
     <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
       <h1><i>Today</i></h1>
     </div>
@@ -19,7 +19,7 @@
     </table>
     <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
   </div>
-  <div class="w3-col s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
+  <div class="w3-row s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
     <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
       <h1><i>Tomorrow</i></h1>
     </div>
@@ -27,7 +27,7 @@
     </table>
     <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
   </div>
-  <div class="w3-col s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
+  <div class="w3-row s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white">
     <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
       <h1><i>Someday</i></h1>
     </div>
@@ -143,10 +143,12 @@ function edit_task(event) {
   // move the text to the input editor
   $("#input-"+id).val($("#description-"+id).text());
   $("#tagInput-"+id).val($("#tag-"+id).text());
+
   // hide the text display
   $("#move_task-"+id).prop('hidden', true);
+  $("#move_task2-"+id).prop('hidden', true);
   $("#description-"+id).prop('hidden', true);
-  $("#tag-"+id).prop('hidden', true);
+  $("#tag-"+id).hide();
   $("#edit_task-"+id).prop('hidden', true);
   $("#delete_task-"+id).prop('hidden', true);
   $("#time-"+id).prop('hidden', true);
@@ -189,16 +191,19 @@ function undo_edit(event) {
   console.log("undo",[id])
   $("#input-" + id).val("");
   $("#tagInput-" +id).val("");
-  if ((id != "today") & (id != "tomorrow")) {
+  $("#save_edit-"+id).prop('hidden', true);
+  $("#undo_edit-"+id).prop('hidden', true);
+  $("#filler-"+id).prop('hidden', false);
+  if ((id != "today") & (id != "tomorrow") & (id != "someday")) {
     // hide the editor
     $("#editor-"+id).prop('hidden', true);
-    $("#save_edit-"+id).prop('hidden', true);
-    $("#undo_edit-"+id).prop('hidden', true);
+
     // show the text display
     $("#move_task-"+id).prop('hidden', false);
+    $("#move_task2-"+id).prop('hidden', false);
     $("#description-"+id).prop('hidden', false);
-    $("#tag-"+id).prop('hidden', false);
-    $("#filler-"+id).prop('hidden', false);
+    $("#tag-"+id).show();
+    
     $("#edit_task-"+id).prop('hidden', false);
     $("#delete_task-"+id).prop('hidden', false);
     $("#time-"+id).prop('hidden', false);
@@ -226,14 +231,15 @@ function display_task(x) {
     t = '<tr id="task-'+x.id+'" class="task">' +
         '  <td style="width:36px"></td>' +  
         '  <td><span id="editor-'+x.id+'">' + 
-    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:55%; margin-right: 1%;" class="w3-input" '+ 
+    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:75%; margin-right: 1%;" class="w3-input" '+ 
     '          type="text" autofocus placeholder="Add an item..."/>'+
-    '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:27%; margin-right:1%" class="w3-input" '+ 
+    '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:150px; margin-right:1%" class="w3-input" '+ 
     '          type="time"/>'+
-    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:13%;" class="w3-input" '+ 
+    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:75px;" class="w3-input" '+ 
     '          type="text" autofocus placeholder="Tag..."/>'+
     '      </span>' +  
     '  </td>' +
+    (x.id == "tomorrow" ? '  <td style="width:36px"></td>'  : '') + 
         '  <td style="width:72px">' +
         '    <span id="filler-'+x.id+'" class="material-icons">more_horiz</span>' + 
         '    <span id="save_edit-'+x.id+'" hidden class="save_edit material-icons">done</span>' + 
@@ -252,11 +258,11 @@ function display_task(x) {
         '          type="time" value="' + (x.completeBy ?? '00:00') + '"/>'+
         '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:13%;" class="w3-input" type="text" autofocus/>' +
         '      </span>' + 
-        '  <span id="tag-'+x.id+'" class="description' + completed + '">' + '[' + x.tag + ']' + '</span>' + 
+        '  <span id="tag-'+x.id+'" class="description ' + completed + ' w3-tag">'  + x.tag  + '</span>' + 
         '  </td>' +
           (x.list == "tomorrow" ? '<td><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_forward</span></td>' : '') + 
 
-        '  <td>' +
+        '  <td style="width:72px">' +
         '    <span id="edit_task-'+x.id+'" class="edit_task '+x.list+' material-icons">edit</span>' +
         '    <span id="delete_task-'+x.id+'" class="delete_task material-icons">delete</span>' +
         '    <span id="save_edit-'+x.id+'" hidden class="save_edit material-icons">done</span>' + 
