@@ -1,0 +1,59 @@
+
+Feature: showing off swift task book
+
+  Scenario: delete a task
+     Given we have a task added 
+      When we delete a test
+      Then the task will be null 
+
+Scenario: add a tag
+     Given we have a task we want to add a tag to 
+      When we add a tag
+      Then the task will have a tag
+
+Scenario: marking task off
+     Given we have a task to be marked off
+      When we click on the task 
+      Then the task text will be crossed off 
+
+Scenario: change task category
+     Given we have a task to moved to tomorrow/someday/etc
+      When we move the task
+      Then the task will be catgegorized as tomorrow/someday/etc
+
+
+Scenario: add time to the task 
+     Given we have a task we want to assign a certain time
+      When we right click (?) on the task
+      Then the task can have a time added
+
+Scenario: edit a task
+     Given we have a task we want to edit
+      When we right click (?) on the task
+      Then the task can have a time edited
+
+Scenario: sound on the website // cookies
+     Given we have a website to visit on python anywhere
+      When we open the website
+      Then the sound will autoplay (browser issues) or will be visible to play
+
+Scenario: Login
+     Given we have a website to visit on python anywhere
+      When we visit the webiste
+      Then we can login with a valid username/ password
+
+
+Scenario: Logout 
+     Given we have a website to visit on python anywhere
+      When we visit the webiste
+      Then we can logout of our session
+
+Scenario: Logout keeping sessions
+     Given we have a website to visit on python anywhere
+      When we visit the webiste
+      Then our session remained if we did not logout previously 
+
+Scenario: add color to the task 
+     Given we have a task we want to color code
+      When we right click (?) on the task
+      Then the task can have a color added
