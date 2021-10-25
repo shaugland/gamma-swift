@@ -8,6 +8,7 @@
   .completed {text-decoration: line-through;}
   .description {padding-left:8px;}
   
+
 </style>
 
 <div class="w3-row">
@@ -225,8 +226,20 @@ function delete_task(event) {
 }
 
 function display_task(x) {
+
+  
+
   arrow = (x.list == "today") ? "arrow_forward" : "arrow_back";
   completed = x.completed ? " completed" : "";
+
+    // Seperate tags into array
+  var tagHtml = '';
+  if (x.tag)
+    x.tag.split(",").forEach(tag => {
+      tagHtml += '<span class="description ' + completed + ' w3-tag">'  + tag  + '</span>         ';
+    });
+
+
   if ((x.id == "today") | (x.id == "tomorrow") | (x.id == "someday")) {
     t = '<tr id="task-'+x.id+'" class="task">' +
         '  <td style="width:36px"></td>' +  
@@ -235,8 +248,9 @@ function display_task(x) {
     '          type="text" autofocus placeholder="Add an item..."/>'+
     '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:150px; margin-right:1%" class="w3-input" '+ 
     '          type="time"/>'+
-    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:75px;" class="w3-input" '+ 
-    '          type="text" autofocus placeholder="Tag..."/>'+
+    '        <br />' +
+    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:75%" class="w3-input" '+ 
+    '          type="text" autofocus placeholder="Tag, seperate by ,"/>'+
     '      </span>' +  
     '  </td>' +
     (x.id == "tomorrow" ? '  <td style="width:36px"></td>'  : '') + 
@@ -256,9 +270,11 @@ function display_task(x) {
         '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:40%;" class="w3-input" type="text" autofocus/>' +
         '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:27%;" class="w3-input" '+ 
         '          type="time" value="' + (x.completeBy ?? '00:00') + '"/>'+
-        '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:13%;" class="w3-input" type="text" autofocus/>' +
+        '        <br />' +
+        '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:75%" class="w3-input" type="text" autofocus placeholder="Tag, seperate by ,"/>' +
         '      </span>' + 
-        '  <span id="tag-'+x.id+'" class="description ' + completed + ' w3-tag">'  + x.tag  + '</span>' + 
+        '      <span id="tag-'+x.id+'" class="description ' + completed + ' w3-tag" style="display: none;">'  + x.tag  + '</span>' + 
+               tagHtml +
         '  </td>' +
           (x.list == "tomorrow" ? '<td><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_forward</span></td>' : '') + 
 
