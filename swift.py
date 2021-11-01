@@ -19,6 +19,7 @@ from bottle import run, default_app
 
 @route('/')
 @route('/tasks')
+@route('/home')
 def tasks():
     return template("tasks.tpl") 
 
@@ -29,6 +30,14 @@ def login():
 @route('/register')
 def login():
     return template("register.tpl") 
+
+@route('/about')
+def about():
+    return template("about.tpl")
+
+@route('/settings')
+def settings():
+    return template("settings.tpl")
 
 # ---------------------------
 # task REST api 
