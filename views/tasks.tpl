@@ -149,7 +149,7 @@ function edit_task(event) {
   $("#move_task-"+id).prop('hidden', true);
   $("#move_task2-"+id).prop('hidden', true);
   $("#description-"+id).prop('hidden', true);
-  $("#tag-"+id).hide();
+  $(".tag-"+id).addClass("w3-hide");
   $("#edit_task-"+id).prop('hidden', true);
   $("#delete_task-"+id).prop('hidden', true);
   $("#time-"+id).prop('hidden', true);
@@ -171,14 +171,16 @@ function save_edit(event) {
   id = event.target.id.replace("save_edit-","");
   console.log("desc to save = ",$("#input-" + id).val())
   if ((id != "today") & (id != "tomorrow") & (id != "someday")) {
-    api_update_task({'id':id, description:$("#input-" + id).val(), completeBy:$("#timeInput-" + id).val(), tag:$("#tagInput-" + id).val()},
+    api_update_task({'id':id, description:$("#input-" + id).val(), completeBy:$("#timeInput-" + id).val()
+                          , tag:$("#tagInput-" + id).val(), tagColor:$("#tagColor-" + id).val(), taskColor:$("#taskColor-" + id).val()},
                     function(result) { 
                       console.log(result);
                       get_current_tasks();
                       $("#current_input").val("")
                     } );
   } else {
-    api_create_task({description:$("#input-" + id).val(), list:id, completeBy:$("#timeInput-" + id).val(), tag:$("#tagInput-" + id).val()},
+    api_create_task({description:$("#input-" + id).val(), list:id, completeBy:$("#timeInput-" + id).val()
+                            , tag:$("#tagInput-" + id).val(), tagColor:$("#tagColor-" + id).val(), taskColor:$("#taskColor-" + id).val()},
                     function(result) { 
                       console.log(result);
                       get_current_tasks();
@@ -203,7 +205,7 @@ function undo_edit(event) {
     $("#move_task-"+id).prop('hidden', false);
     $("#move_task2-"+id).prop('hidden', false);
     $("#description-"+id).prop('hidden', false);
-    $("#tag-"+id).show();
+    $(".tag-"+id).removeClass("w3-hide");
     
     $("#edit_task-"+id).prop('hidden', false);
     $("#delete_task-"+id).prop('hidden', false);
@@ -236,7 +238,7 @@ function display_task(x) {
   var tagHtml = '';
   if (x.tag)
     x.tag.split(",").forEach(tag => {
-      tagHtml += '<span class="description ' + completed + ' w3-tag">'  + tag  + '</span>         ';
+      tagHtml += '<span class="description tag-'+x.id+' ' + completed + ' w3-tag" style="background-color:'+x.tagColor +';border-radius: 3px;">'  + tag  + '</span>         ';
     });
 
 
@@ -249,8 +251,14 @@ function display_task(x) {
     '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:150px; margin-right:1%" class="w3-input" '+ 
     '          type="time"/>'+
     '        <br />' +
-    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:75%" class="w3-input" '+ 
+    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:60%; margin-right: 1%;" class="w3-input" '+ 
     '          type="text" autofocus placeholder="Tag, seperate by ,"/>'+
+    '         <label for="task">Task Color:</label> '+
+    '           <input type="color" id="taskColor-'+x.id+'"value="#'+Math.floor(Math.random()*16777215).toString(16)+'" '+
+    '                     name="task" style="height:23px; display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
+    '         <label for="tag">Tag Color:</label> '+
+    '           <input type="color" id="tagColor-'+x.id+'"value="#'+Math.floor(Math.random()*16777215).toString(16)+'" '+
+    '                     name="tag" style="height:23px; display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
     '      </span>' +  
     '  </td>' +
     (x.id == "tomorrow" ? '  <td style="width:36px"></td>'  : '') + 
@@ -259,11 +267,13 @@ function display_task(x) {
         '    <span id="save_edit-'+x.id+'" hidden class="save_edit material-icons">done</span>' + 
         '    <span id="undo_edit-'+x.id+'" hidden class="undo_edit material-icons">cancel</span>' +
         '  </td>' +
+        '<td>'+
+        '</td>'+
         '</tr>';
   } else {
     t = '<tr id="task-'+x.id+'" class="task">' + 
         '  <td><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons">' + arrow + '</span></td>' +
-        '  <td><span id="description-'+x.id+'" class="description' + completed + '">' + x.description + '</span>' + 
+        '  <td><span id="description-'+x.id+'" class="description' + completed + '" style="background-color:'+x.taskColor+'; padding:5px; border-radius: 3px">' + x.description + '</span>' + 
         '  <span id="line-'+x.id+'">' + (x.completeBy ? ' - ' : '') +'</span>'  +
         '      <span id="time-' + x.id + '" class="description '+ completed + '" style="padding-left:0px;"' + '">' + (x.completeBy ? change_time(x.completeBy) : '') + '</span>' + 
         '      <span id="editor-'+x.id+'" hidden>' + 
@@ -271,10 +281,16 @@ function display_task(x) {
         '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:27%;" class="w3-input" '+ 
         '          type="time" value="' + (x.completeBy ?? '00:00') + '"/>'+
         '        <br />' +
-        '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:75%" class="w3-input" type="text" autofocus placeholder="Tag, seperate by ,"/>' +
+        '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:60%" class="w3-input" type="text" autofocus placeholder="Tag, seperate by ,"/>' +
+        '         <label for="task">Task</label> '+
+        '           <input type="color" id="taskColor-'+x.id+'"value="'+x.taskColor+'" name="task" style="height:23px; '+
+        '                       display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
+        '         <label for="tag">Tag</label> '+
+        '           <input type="color" id="tagColor-'+x.id+'"value="'+x.tagColor+'" name="tag" style="height:23px; '+
+        '                       display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
         '      </span>' + 
-        '      <span id="tag-'+x.id+'" class="description ' + completed + ' w3-tag" style="display: none;">'  + x.tag  + '</span>' + 
-               tagHtml +
+        '      <span id="tag-'+x.id+'" class="description tag-'+x.id+' ' + completed + ' w3-tag" style="display: none;">'  + x.tag  + '</span>' + 
+                tagHtml +
         '  </td>' +
           (x.list == "tomorrow" ? '<td><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_forward</span></td>' : '') + 
 
