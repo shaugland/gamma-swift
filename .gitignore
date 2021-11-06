@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Database Files
+taskbook.db
+taskbook.db-shm
+taskbook.db-wal
+*.db
