@@ -41,3 +41,23 @@ def step_impl(context):
 def step_impl(context):
     assert context.before_delete_number == context.after_delete_number + 1
 
+@when(u'we edit a task')
+def step_impl(context):
+    element = context.browser.find_elements_by_class_name('edit_task')[0]
+    element.click()
+    edit_num = element.get_property('id')[10:]
+    edit_input = context.browser.find_element_by_id('input-'+edit_num)
+    edit_input.clear()
+    edit_input.send_keys('edit a task')
+
+    context.browser.find_element_by_id('save_edit-'+edit_num).click()
+
+@then(u'the task should be different')
+def step_impl(context):
+    count = 0
+    spans = list(context.browser.find_elements_by_tag_name('span'))
+    for span in spans:
+        if 'edit a task' in span.text:
+            count = count + 1
+    
+    assert count > 0
