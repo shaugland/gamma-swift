@@ -42,6 +42,8 @@
 <input id="current_input" hidden value=""/> 
 <script>
 
+
+
 // Change from 24hr to 12hr
 // Takes time in the form of 00:00
 
@@ -318,7 +320,6 @@ function display_task(x) {
     '           </select>'+
     '      </span>' +  
     '  </td>' +
-    (x.id == "tomorrow" ? '  <td style="width:36px"></td>'  : '') + 
         '  <td style="width:72px">' +
         '    <span id="filler-'+x.id+'" class="material-icons">more_horiz</span>' + 
         '    <span id="save_edit-'+x.id+'" hidden class="save_edit material-icons">done</span>' + 
@@ -327,8 +328,10 @@ function display_task(x) {
         '</tr>';
   } else {
     t = '<tr id="task-'+x.id+'" class="task">' + 
-        '  <td><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons">' + arrow + '</span></td>' +
-        '  <td><span id="description-'+x.id+'" class="description' + completed + '" style="background-color:'+x.taskColor+'; padding:5px; border-radius: 3px" draggable="true" ondragstart="drag(event)">>' + x.description + '</span>' + 
+
+        '  <td><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons">' + arrow + '</span>' +
+              (x.list == "tomorrow" ? '<br><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_downward</span>' : '') + '</td>' +
+        '  <td><span id="description-'+x.id+'" class="description' + completed + '" style="background-color:'+x.taskColor+'; padding:5px; border-radius: 3px">' + x.description + '</span>' + 
         '  <span id="line-'+x.id+'">' + (x.completeBy ? ' - ' : '') +'</span>'  +
         '      <span id="time-' + x.id + '" class="description '+ completed + '" style="padding-left:0px;"' + '">' + (x.completeBy ? change_time(x.completeBy) : '') + '</span>' + 
         '      <span id="editor-'+x.id+'" hidden>' + 
@@ -341,7 +344,7 @@ function display_task(x) {
         '                       display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
         '         <label for="tag">Tag</label> '+
         '           <select id="tagColor-'+x.id+'" style="width:80px"> '+
-        '               <option class = "w3-tag w3-white" value="w3-white">White</option>'+
+        '               <option class = "w3-tag w3-white" value="w3-transparent w3-text-black">White</option>'+
         '               <option class = "w3-tag w3-black" value="w3-black">Black</option>'+
         '               <option class = "w3-tag w3-red" value="w3-red">Red</option>'+
         '               <option class = "w3-tag w3-orange" value="w3-orange">Orange</option>'+
@@ -355,7 +358,7 @@ function display_task(x) {
         '      <br><span id="tag-'+x.id+'" class="description tag-'+x.id+' ' + completed + ' w3-tag w3-white" style="display: none;">'  + x.tag  + '</span>' + 
                 tagHtml +
         '  </td>' +
-          (x.list == "tomorrow" ? '<td><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_downward</span></td>' : '') + 
+          
 
         '  <td style="width:72px" class="w3-right-align">' +
         '    <span id="edit_task-'+x.id+'" class="edit_task '+x.list+' material-icons">edit</span>' +
@@ -376,6 +379,8 @@ function get_current_tasks() {
   display_task({id:"today", list:"today"})
   display_task({id:"tomorrow", list:"tomorrow"})
   display_task({id:"someday", list:"someday"})
+
+
   // display the tasks
   api_get_tasks(function(result){
     for (const task of result.tasks) {
@@ -390,6 +395,7 @@ function get_current_tasks() {
     $(".delete_task").click(delete_task);
     // set all inputs to set flag
     $("input").keypress(input_keypress);
+
   });
 }
 
