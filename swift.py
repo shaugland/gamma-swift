@@ -35,9 +35,7 @@ def login():
 def about():
     return template("about.tpl")
 
-@route('/settings')
-def settings():
-    return template("settings.tpl")
+
 
 # ---------------------------
 # task REST api 
@@ -48,6 +46,20 @@ import dataset
 import time
 
 taskbook_db = dataset.connect('sqlite:///taskbook.db')  
+
+@route('/settings')
+def settings():
+    settings_table = taskbook_db.get_table('settings')
+    tasks = [dict(x) for x in settings_table.find()]
+    return template("settings.tpl", tasks=tasks)
+
+@post('/api/settings')
+def set_setting():
+    data = request.json
+    settings_table = taskbook_db.get_table('settings')
+    settings_table.update(row=data, keys=['name'])
+    return json.dumps({'status':200, 'success': True})
+
 
 @get('/api/tasks')
 def get_tasks():
