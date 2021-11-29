@@ -16,7 +16,7 @@
     var settings = [];
     $.ajax({
             async: false,
-            url: "api/settings", 
+            url: "api/settings/get", 
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function(res) {
