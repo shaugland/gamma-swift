@@ -3,7 +3,7 @@
   <br />
   <span class="w3-left" style="padding-left:20px">
     <a href="/home">Home</a>
-    <a href="/settings">Settings</a>
+    <a id="settingsPage" href="/settings">Settings</a>
     <a href="/about">About</a>
   </span>
   <span class="w3-right" >
