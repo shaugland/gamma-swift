@@ -17,7 +17,7 @@
     $.ajax({
             async: false,
             url: "api/settings/get", 
-            type: "GET",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function(res) {
               settings = res.settings;
