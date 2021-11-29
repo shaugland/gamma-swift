@@ -12,5 +12,35 @@
       background-color: #f2f2f2;
     }
   </style>
+  <script>
+    var settings = [];
+    $.ajax({
+              url: "api/settings", 
+              type: "GET",
+              contentType: "application/json; charset=utf-8",
+              success: function(res) {
+                settings = res.settings;
+              }
+          });
+  </script>
 </head>
 <body>
+
+<script>
+  //var settings = []; // settings variable to be used throughout the application
+  $(function () {
+    
+  });
+
+
+  function get_settings() {
+    $.ajax({
+              url: "api/settings", 
+              type: "GET",
+              contentType: "application/json; charset=utf-8",
+              success: function(res) {
+                settings = res.settings;
+              }
+          });
+  }
+</script>

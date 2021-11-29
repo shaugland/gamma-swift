@@ -2,8 +2,10 @@
 % include("banner.tpl")
 
 <script>
+    
+
     function settingsSubmit(event) {
-        var musicInclude = $("#includeMusic").is(":checked") ? 1 : 0;
+        var musicInclude = $("#includeMusic").is(":checked") ? 'true' : 'false';
 
         settings = {
             'name': 'includeMusic',
@@ -20,15 +22,23 @@
         alert("your settings have been successfully saved");
     }
 
+    function setSettings() {
+        var includeMusic = settings.find(setting => setting.name === "includeMusic").value == "true";
+        if (includeMusic)
+            $("#includeMusic").prop('checked', true);
+        else 
+            $("#includeMusic").prop('checked', false);
+    }
+
     $(document).ready(function() {
         $("#submitButton").click(settingsSubmit);
-        
-        % print([element for element in tasks if element['name'] == 'includeMusic'][0])
-        % if [element for element in tasks if element['name'] == 'includeMusic'][0]['value'] == True:
-            $("#includeMusic").prop('checked', true);
-        % else:
-            $("#includeMusic").prop('checked', false);
-        %end
+        if (settings.length != 0) {
+            setSettings();
+        }
+        else {
+            get_settings();
+            setSettings();
+        }
     });
 </script>
 

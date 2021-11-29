@@ -17,8 +17,8 @@ if __name__ == "__main__":
     task_table.drop()
     task_table = taskbook_db.create_table('settings')
     task_table.insert_many([
-        { 'name': 'includeMusic', 'value': True},
-        { 'name': 'includeTags', 'value': True}
+        { 'name': 'includeMusic', 'value': 'true'},
+        { 'name': 'includeTags', 'value': 'true'}
     ])
     #Pats attempt at login
     # user_table = taskbook_db.get_table('user')

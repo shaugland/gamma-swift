@@ -51,7 +51,13 @@ taskbook_db = dataset.connect('sqlite:///taskbook.db')
 def settings():
     settings_table = taskbook_db.get_table('settings')
     tasks = [dict(x) for x in settings_table.find()]
-    return template("settings.tpl", tasks=tasks)
+    return template("settings.tpl")
+
+@get('/api/settings')
+def get_settings():
+    settings_table = taskbook_db.get_table('settings')
+    settings = [dict(x) for x in settings_table.find()]
+    return { "settings": settings }
 
 @post('/api/settings')
 def set_setting():
