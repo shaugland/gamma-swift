@@ -55,6 +55,8 @@ def settings():
 
 @get('/api/settings')
 def get_settings():
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache'
     settings_table = taskbook_db.get_table('settings')
     settings = [dict(x) for x in settings_table.find()]
     return { "settings": settings }
