@@ -53,7 +53,7 @@ def settings():
     tasks = [dict(x) for x in settings_table.find()]
     return template("settings.tpl")
 
-@post('/api/settings/get')
+@get('/api/settings/get')
 def get_settings():
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'
