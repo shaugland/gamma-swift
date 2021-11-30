@@ -17,7 +17,7 @@
     $.ajax({
             async: false,
             url: "api/settings/get", 
-            type: "POST",
+            type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function(res) {
               settings = res.settings;
@@ -30,7 +30,7 @@
 <script>
   function get_settings() {
     $.ajax({
-              url: "api/settings", 
+              url: "api/settings/get", 
               type: "GET",
               contentType: "application/json; charset=utf-8",
               success: function(res) {
