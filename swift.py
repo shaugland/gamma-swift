@@ -97,7 +97,7 @@ def create_task():
         task_table.insert({
             "time": time.time(),
             "description":data['description'].strip(),
-            "list":data['list'],
+            "list":data['list'].strip(),
             "completeBy":data['completeBy'],
             "tag":data['tag'].strip(),
             "tagColor":data['tagColor'].strip(),

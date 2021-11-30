@@ -2,9 +2,9 @@
   <span class="w3-xxxlarge w3-margin"><b>Taskbook v4.52348</b></span>
   <br />
   <span class="w3-left" style="padding-left:20px">
-    <a href="/home">Home</a>
-    <a href="/settings">Settings</a>
-    <a href="/about">About</a>
+    <a class="material-icons" style="text-decoration: none;" href="/home">home</a>
+    <a class="material-icons" style="text-decoration: none;" href="/settings">settings</a>
+    <a class="material-icons" style="text-decoration: none;" href="/about">help</a>
   </span>
   <span class="w3-right" >
 
