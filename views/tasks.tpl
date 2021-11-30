@@ -6,38 +6,55 @@
     cursor: pointer;
   }
   .completed {text-decoration: line-through;}
-  .description {padding-left:8px;}
+  .description {padding-left:8px; word-wrap: break-word;}
   
 
 </style>
 
+<!--<div class="w3-sidebar w3-blue" style="top: 125px;"></div>-->
+
 <div class="w3-row">
-  <div class="w3-row s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_today(event)" ondragover="allow_drop(event)">
-    <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
-      <h1><i>Today</i></h1>
-    </div>
-    <table id="task-list-today" class="w3-table">
-    </table>
-    <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
+  <div class="w3-col l2 m2 s4" style="">
+    <p> </p>
   </div>
-  <div class="w3-row s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_tomorrow(event)" ondragover="allow_drop(event)">
-    <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
-      <h1><i>Tomorrow</i></h1>
+  <div class="w3-col l8 m8 s8" style="">
+    <div class="w3-row w3-round w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-blue w3-margin-left w3-margin-right w3-margin-top">
+      <div class="w3-row w3-center w3-xxlarge">
+        <h1><b>Add a Task...</b></h1>
+      </div>
+      <div id="task-list-editor" class="w3-table">
+      </div>
     </div>
-    <table  id="task-list-tomorrow" class="w3-table">
-    </table>
-    <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
+    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_today(event)" ondragover="allow_drop(event)">
+      <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
+        <h1><i>Today</i></h1>
+      </div>
+      <table id="task-list-today" class="w3-table">
+      </table>
+      <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
+    </div>
+    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_tomorrow(event)" ondragover="allow_drop(event)">
+      <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
+        <h1><i>Tomorrow</i></h1>
+      </div>
+      <table  id="task-list-tomorrow" class="w3-table">
+      </table>
+      <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
+    </div>
+    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_someday(event)" ondragover="allow_drop(event)">
+      <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
+        <h1><i>Someday</i></h1>
+      </div>
+      <table  id="task-list-someday" class="w3-table">
+      </table>
+      <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
+    </div>
   </div>
-  <div class="w3-row s4 w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_someday(event)" ondragover="allow_drop(event)">
-    <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
-      <h1><i>Someday</i></h1>
-    </div>
-    <table  id="task-list-someday" class="w3-table">
-    </table>
-    <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
+  <div class="w3-col l2 m2 w3-hide-small" style=""> 
+  <p> </p>
   </div>
 </div>
-</div>
+
 
 <input id="current_input" hidden value=""/> 
 <script>
@@ -197,6 +214,7 @@ function edit_task(event) {
   // move the text to the input editor
   $("#input-"+id).val($("#description-"+id).text());
   $("#tagInput-"+id).val($("#tag-"+id).text());
+  $("#tagColor-"+id).val($())
 
   // hide the text display
   $("#move_task-"+id).prop('hidden', true);
@@ -223,7 +241,7 @@ function save_edit(event) {
   console.log("save item", event.target.id)
   id = event.target.id.replace("save_edit-","");
   console.log("desc to save = ",$("#input-" + id).val())
-  if ((id != "today") & (id != "tomorrow") & (id != "someday")) {
+  if (id != "editor") {
     api_update_task({'id':id, description:$("#input-" + id).val(), completeBy:$("#timeInput-" + id).val()
                           , tag:$("#tagInput-" + id).val(), tagColor:$("#tagColor-" + id).val(), taskColor:$("#taskColor-" + id).val()},
                     function(result) { 
@@ -232,7 +250,7 @@ function save_edit(event) {
                       $("#current_input").val("")
                     } );
   } else {
-    api_create_task({description:$("#input-" + id).val(), list:id, completeBy:$("#timeInput-" + id).val()
+    api_create_task({description:$("#input-" + id).val(), list:$("#list-" + id).val(), completeBy:$("#timeInput-" + id).val()
                             , tag:$("#tagInput-" + id).val(), tagColor:$("#tagColor-" + id).val(), taskColor:$("#taskColor-" + id).val()},
                     function(result) { 
                       console.log(result);
@@ -247,10 +265,11 @@ function undo_edit(event) {
   console.log("undo",[id])
   $("#input-" + id).val("");
   $("#tagInput-" +id).val("");
+  $("#tagColor-" +id).val("");
   $("#save_edit-"+id).prop('hidden', true);
   $("#undo_edit-"+id).prop('hidden', true);
   $("#filler-"+id).prop('hidden', false);
-  if ((id != "today") & (id != "tomorrow") & (id != "someday")) {
+  if (id != "editor") {
     // hide the editor
     $("#editor-"+id).prop('hidden', true);
 
@@ -293,21 +312,25 @@ function display_task(x) {
     });
 
 
-  if ((x.id == "today") | (x.id == "tomorrow") | (x.id == "someday")) {
+  if ((x.id == "editor")) {
     t = '<tr id="task-'+x.id+'" class="task">' +
-        '  <td style="width:36px"></td>' +  
         '  <td><span id="editor-'+x.id+'">' + 
-    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:30%; margin-right: 1%;" class="w3-input w3-animate-input w3-border" '+ 
+    '        <select id="list-'+x.id+'" style="width:105px"> '+
+    '           <option value="today">Today</option>'+
+    '           <option value="tomorrow">Tomorrow</option>'+
+    '           <option value="someday">Someday</option>'+
+    '         </select>'+
+    '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:30%;" class="w3-input w3-border w3-round" '+ 
     '          type="text" autofocus placeholder="Add an item..."/>'+
-    '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:150px; margin-right:1%" class="w3-input w3-border" '+ 
+    '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:150px;" class="w3-input w3-round w3-border" '+ 
     '          type="time"/>'+
-    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:200px; margin-right: 1%;" class="w3-input w3-border" '+ 
+    '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:200px;" class="w3-input w3-round w3-border" '+ 
     '          type="text" autofocus placeholder="Tag, seperate by ,"/>'+
     '         <label for="task">Task Color:</label> '+
     '           <input type="color" id="taskColor-'+x.id+'"value="#ffffff" '+
     '                     name="task" style="height:23px; display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
-    '         <label for="tag">Tag Color:</label> '+
-    '           <select id="tagColor-'+x.id+'" style="width:80px"> '+
+    '         <label for="tagColor">Tag Color:</label> '+
+    '           <select type="text" name="tagColor" id="tagColor-'+x.id+'" style="width:80px"> '+
     '               <option class = "w3-tag w3-white" value="w3-transparent w3-text-black">White</option>'+
     '               <option class = "w3-tag w3-black" value="w3-black">Black</option>'+
     '               <option class = "w3-tag w3-red" value="w3-red">Red</option>'+
@@ -329,9 +352,9 @@ function display_task(x) {
   } else {
     t = '<tr id="task-'+x.id+'" class="task">' + 
 
-        '  <td><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons">' + arrow + '</span>' +
+        '  <td style="width:20px"><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons" style="width:20px">' + arrow + '</span>' +
               (x.list == "tomorrow" ? '<br><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_downward</span>' : '') + '</td>' +
-        '  <td><span id="description-'+x.id+'" class="description' + completed + '" style="background-color:'+x.taskColor+'; padding:5px; border-radius: 3px">' + x.description + '</span>' + 
+        '  <td style="max-width:0px;"><span id="description-'+x.id+'" class="description' + completed + '" style="background-color:'+x.taskColor+'; padding:5px; border-radius: 3px">' + x.description + '</span>' + 
         '  <span id="line-'+x.id+'">' + (x.completeBy ? ' - ' : '') +'</span>'  +
         '      <span id="time-' + x.id + '" class="description '+ completed + '" style="padding-left:0px;"' + '">' + (x.completeBy ? change_time(x.completeBy) : '') + '</span>' + 
         '      <span id="editor-'+x.id+'" hidden>' + 
@@ -342,8 +365,8 @@ function display_task(x) {
         '         <label for="task">Task</label> '+
         '           <input type="color" id="taskColor-'+x.id+'"value="'+x.taskColor+'" name="task" style="height:23px; '+
         '                       display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
-        '         <label for="tag">Tag</label> '+
-        '           <select id="tagColor-'+x.id+'" style="width:80px"> '+
+        '         <label for="tagColor">Tag</label> '+
+        '           <select name="tagColor" id="tagColor-'+x.id+'" style="width:80px"> '+
         '               <option class = "w3-tag w3-white" value="w3-transparent w3-text-black">White</option>'+
         '               <option class = "w3-tag w3-black" value="w3-black">Black</option>'+
         '               <option class = "w3-tag w3-red" value="w3-red">Red</option>'+
@@ -376,9 +399,10 @@ function get_current_tasks() {
   // remove the old tasks
   $(".task").remove();
   // display the new task editor
-  display_task({id:"today", list:"today"})
-  display_task({id:"tomorrow", list:"tomorrow"})
-  display_task({id:"someday", list:"someday"})
+  //display_task({id:"today", list:"today"})
+  //display_task({id:"tomorrow", list:"tomorrow"})
+  //display_task({id:"someday", list:"someday"})
+  display_task({id:"editor", list:"editor"})
 
 
   // display the tasks
