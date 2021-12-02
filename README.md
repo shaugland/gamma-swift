@@ -12,7 +12,11 @@ Up to date Python Anywhere for this Project: http://sfhaugland1.pythonanywhere.c
 To run this site locally please read below!
 
 #1: Make sure to have up to date Python, Bottle, Dataset installed
+
 #2: Clone the Repository from Github (using Git or Bash)
+
 #3: Make sure to Run setup.py before running the repository
+
 #4: Once you are in the repo on your version of Bash, Run "Python3 swift.py"
+
 #5: You are then able to go to your preferred engine and open the site using localhost
