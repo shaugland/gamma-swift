@@ -78,8 +78,12 @@ def get_tasks():
     tasks = [dict(x) for x in task_table.find(order_by='time')]
 
     # also placing settings here since database works here
-    settings_table = taskbook_db.get_table('configSettings')
-    settings = [dict(x) for x in settings_table.find(order_by='id')]
+    settings = []
+    try: 
+        settings_table = taskbook_db.get_table('configSettings')
+        settings = [dict(x) for x in settings_table.find(order_by='id')]
+    except Exception as e:
+        settings[0] = e
     return { "tasks": tasks, 'testingSettings': settings }
 
 @post('/api/tasks')
