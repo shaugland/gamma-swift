@@ -55,6 +55,7 @@ def settings():
 
 @get('/api/settings/get')
 def get_settings():
+    taskbook_db = dataset.connect('sqlite:///taskbook.db')  
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'
     settings_table = taskbook_db.get_table('configSettings')
