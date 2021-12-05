@@ -57,14 +57,14 @@ def settings():
 def get_settings():
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'
-    settings_table = taskbook_db.get_table('settings')
+    settings_table = taskbook_db.get_table('configSettings')
     settings = [dict(x) for x in settings_table.find()]
     return { "settings": settings }
 
 @post('/api/settings')
 def set_setting():
     data = request.json
-    settings_table = taskbook_db.get_table('settings')
+    settings_table = taskbook_db.get_table('configSettings')
     settings_table.update(row=data, keys=['name'])
     return json.dumps({'status':200, 'success': True})
 
@@ -78,7 +78,7 @@ def get_tasks():
     tasks = [dict(x) for x in task_table.find(order_by='time')]
 
     # also placing settings here since database works here
-    settings_table = taskbook_db.get_table('settings')
+    settings_table = taskbook_db.get_table('configSettings')
     settings = [dict(x) for x in settings_table.find(order_by='id')]
     return { "tasks": tasks, 'testingSettings': settings }
 

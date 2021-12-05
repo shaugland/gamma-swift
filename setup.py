@@ -13,9 +13,9 @@ if __name__ == "__main__":
         {"time":0.7, "description":"Do a backflip", "list":"someday", "completed":False, "tag":"tagFive"},
         {"time":0.7, "description":"End world hunger", "list":"someday", "completed":True, "tag":"tagSix"}
     ]) 
-    task_table = taskbook_db.get_table('settings')
+    task_table = taskbook_db.get_table('configSettings')
     task_table.drop()
-    task_table = taskbook_db.create_table('settings')
+    task_table = taskbook_db.create_table('configSettings')
     task_table.insert_many([
         { 'name': 'includeMusic', 'value': 'true'},
         { 'name': 'includeTags', 'value': 'true'}
