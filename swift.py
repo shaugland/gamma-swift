@@ -79,8 +79,8 @@ def get_tasks():
 
     # also placing settings here since database works here
     settings_table = taskbook_db.get_table('settings')
-    settings = [dict(x) for x in settings_table.find()]
-    return { "tasks": tasks, 'settings': settings }
+    settings = [dict(x) for x in settings_table.find(order_by='id')]
+    return { "tasks": tasks, 'testingSettings': settings }
 
 @post('/api/tasks')
 def create_task():

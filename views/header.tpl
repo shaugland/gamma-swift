@@ -30,7 +30,7 @@
       type: "GET",
       contentType: "application/json; charset=utf-8",
       success: (res) => {
-        settings = res.settings;
+        settings = res.testingSettings;
       }
     })
   </script>
