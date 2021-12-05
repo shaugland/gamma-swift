@@ -304,7 +304,7 @@ function display_task(x) {
   arrow = (x.list == "today") ? "arrow_downward" : "arrow_upward";
   completed = x.completed ? " completed" : "";
 
-    // Seperate tags into array
+    // separate tags into array
   var tagHtml = '';
   if (x.tag)
     x.tag.split(",").forEach(tag => {
@@ -325,7 +325,7 @@ function display_task(x) {
     '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:150px;" class="w3-input w3-round w3-border" '+ 
     '          type="time"/>'+
     '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:200px;" class="w3-input w3-round w3-border" '+ 
-    '          type="text" autofocus placeholder="Tag, seperate by ,"/>'+
+    '          type="text" autofocus placeholder="Tag, separate by ,"/>'+
     '         <label for="task">Task Color:</label> '+
     '           <input type="color" id="taskColor-'+x.id+'"value="#ffffff" '+
     '                     name="task" style="height:23px; display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+
@@ -361,7 +361,7 @@ function display_task(x) {
         '        <input id="input-'+x.id+'" style="height:25px; display:inline-block; width:30%;" class="w3-input w3-animate-input w3-border" type="text" autofocus/>' +
         '        <input id="timeInput-'+x.id+'" style="height:25px; display:inline-block; width:150px;" class="w3-input w3-border" '+ 
         '          type="time" value="' + (x.completeBy ?? '00:00') + '"/>'+
-        '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:200px" class="w3-input w3-border" type="text" autofocus placeholder="Tag, seperate by ,"/>' +
+        '        <input id="tagInput-'+x.id+'" style="height:25px; display:inline-block; width:200px" class="w3-input w3-border" type="text" autofocus placeholder="Tag, separate by ,"/>' +
         '         <label for="task">Task</label> '+
         '           <input type="color" id="taskColor-'+x.id+'"value="'+x.taskColor+'" name="task" style="height:23px; '+
         '                       display:inline-block; width:23px; margin-right:1%; border-style:none; background-color:white;">'+

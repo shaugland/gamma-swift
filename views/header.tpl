@@ -23,6 +23,16 @@
               settings = res.settings;
             }
           });
+
+    $.ajax({
+      async: false,
+      url: "api/tasks",
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      success: (res) => {
+        settings = res.settings;
+      }
+    })
   </script>
 </head>
 <body>

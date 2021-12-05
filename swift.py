@@ -76,7 +76,11 @@ def get_tasks():
     response.headers['Cache-Control'] = 'no-cache'
     task_table = taskbook_db.get_table('task')
     tasks = [dict(x) for x in task_table.find(order_by='time')]
-    return { "tasks": tasks }
+
+    # also placing settings here since database works here
+    settings_table = taskbook_db.get_table('settings')
+    settings = [dict(x) for x in task_table.find()]
+    return { "tasks": tasks, 'settings': settings }
 
 @post('/api/tasks')
 def create_task():
