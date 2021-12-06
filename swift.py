@@ -55,16 +55,17 @@ def settings():
 
 @get('/api/settings/get')
 def get_settings():
+    taskbook_db = dataset.connect('sqlite:///taskbook.db')  
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'
-    settings_table = taskbook_db.get_table('settings')
+    settings_table = taskbook_db.get_table('configSettings')
     settings = [dict(x) for x in settings_table.find()]
     return { "settings": settings }
 
 @post('/api/settings')
 def set_setting():
     data = request.json
-    settings_table = taskbook_db.get_table('settings')
+    settings_table = taskbook_db.get_table('configSettings')
     settings_table.update(row=data, keys=['name'])
     return json.dumps({'status':200, 'success': True})
 
@@ -76,7 +77,15 @@ def get_tasks():
     response.headers['Cache-Control'] = 'no-cache'
     task_table = taskbook_db.get_table('task')
     tasks = [dict(x) for x in task_table.find(order_by='time')]
-    return { "tasks": tasks }
+
+    # also placing settings here since database works here
+    settings = []
+    try: 
+        settings_table = taskbook_db.get_table('configSettings')
+        settings = [dict(x) for x in settings_table.find(order_by='id')]
+    except Exception as e:
+        settings[0] = e
+    return { "tasks": tasks, 'testingSettings': settings }
 
 @post('/api/tasks')
 def create_task():
