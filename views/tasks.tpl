@@ -25,7 +25,7 @@
       <div id="task-list-editor" class="w3-table">
       </div>
     </div>
-    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_today(event)" ondragover="allow_drop(event)">
+    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white w3-center" ondrop="drop_today(event)" ondragover="allow_drop(event)">
       <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
         <h1><i>Today</i></h1>
       </div>
@@ -33,7 +33,7 @@
       </table>
       <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
     </div>
-    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_tomorrow(event)" ondragover="allow_drop(event)">
+    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white w3-center" ondrop="drop_tomorrow(event)" ondragover="allow_drop(event)">
       <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
         <h1><i>Tomorrow</i></h1>
       </div>
@@ -41,7 +41,7 @@
       </table>
       <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
     </div>
-    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white" ondrop="drop_someday(event)" ondragover="allow_drop(event)">
+    <div class="w3-row w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-white w3-center" ondrop="drop_someday(event)" ondragover="allow_drop(event)">
       <div class="w3-row w3-xxlarge w3-bottombar w3-border-black w3-margin-bottom">
         <h1><i>Someday</i></h1>
       </div>
@@ -89,7 +89,7 @@ function drop_tomorrow(ev) {
   var data = ev.dataTransfer.getData("text");
   var element = document.getElementById(data);
 
-  var id = element.id.split('description-')[1];
+  var id = element.id.split('task-')[1];
 
   api_update_task({'id':id, 'list':'tomorrow'},
                   function(result) { 
@@ -103,7 +103,7 @@ function drop_today(ev) {
   var data = ev.dataTransfer.getData("text");
   var element = document.getElementById(data);
 
-  var id = element.id.split('description-')[1];
+  var id = element.id.split('task-')[1];
 
   api_update_task({'id':id, 'list':'today'},
                   function(result) { 
@@ -117,7 +117,7 @@ function drop_someday(ev) {
   var data = ev.dataTransfer.getData("text");
   var element = document.getElementById(data);
 
-  var id = element.id.split('description-')[1];
+  var id = element.id.split('task-')[1];
 
   api_update_task({'id':id, 'list':'someday'},
                   function(result) { 
@@ -350,7 +350,7 @@ function display_task(x) {
         '  </td>' +
         '</tr>';
   } else {
-    t = '<tr id="task-'+x.id+'" class="task">' + 
+    t = '<tr id="task-'+x.id+'" class="task" draggable="true" ondragstart="drag(event)">' + 
 
         '  <td style="width:20px"><span id="move_task-'+x.id+'" class="move_task '+x.list+' material-icons" style="width:20px">' + arrow + '</span>' +
               (x.list == "tomorrow" ? '<br><span id="move_task2-'+x.id+'" class="move_task forward'+x.list+' material-icons">arrow_downward</span>' : '') + '</td>' +

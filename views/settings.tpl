@@ -43,9 +43,13 @@
 </script>
 
 <p>Welcome to the settings page, more features coming soon</p>
+<br />
+<p>UNFORTUNATELY, THIS FEATURE WILL NOT WORK IN PRODUCTION, WILL BE COMING SOON</p>
 
 <input type="checkbox" id="includeMusic" name="includeMusic" value="music" />
 <label for="includeMusic">Have background music</label>
+
+<br />
 
 <button id="submitButton">Click me to Submit!</button>
 <br />
