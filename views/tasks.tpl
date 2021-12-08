@@ -11,14 +11,13 @@
 
 </style>
 
-<!--<div class="w3-sidebar w3-blue" style="top: 125px;"></div>-->
 
-<div class="w3-row">
-  <div class="w3-col l2 m2 s4" style="">
-    <p> </p>
+<div class="w3-row w3-bottombar w3-border-white">
+  <div class="w3-col l2 m2 w3-hide-small" style="text-align:center">
+    <img src="/static/rectangle2.png" style="width:80%; height:auto; transform: rotate(180deg);">
   </div>
-  <div class="w3-col l8 m8 s8" style="">
-    <div class="w3-row w3-round w3-container w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-blue w3-margin-left w3-margin-right w3-margin-top">
+  <div class="w3-col l8 m8 s12 w3-white" style="">
+    <div class="w3-row w3-round w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-blue w3-margin-left w3-margin-right w3-margin-top w3-light-grey">
       <div class="w3-row w3-center w3-xxlarge">
         <h1><b>Add a Task...</b></h1>
       </div>
@@ -50,8 +49,8 @@
       <div class="w3-row w3-bottombar w3-border-black w3-margin-bottom w3-margin-top"></div>
     </div>
   </div>
-  <div class="w3-col l2 m2 w3-hide-small" style=""> 
-  <p> </p>
+  <div class="w3-col l2 m2 w3-hide-small" style="text-align:center"> 
+    <img src="/static/rectangle2.png" style="width:80%; height:auto;">
   </div>
 </div>
 

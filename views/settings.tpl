@@ -41,16 +41,19 @@
         }
     });
 </script>
+<div class="w3-container w3-bottombar w3-topbar w3-border-white w3-text-white">
+    <p>Welcome to the settings page, more features coming soon</p>
+    
+    <p>UNFORTUNATELY, THIS FEATURE WILL NOT WORK IN PRODUCTION, WILL BE COMING SOON</p>
 
-<p>Welcome to the settings page, more features coming soon</p>
-<br />
-<p>UNFORTUNATELY, THIS FEATURE WILL NOT WORK IN PRODUCTION, WILL BE COMING SOON</p>
+    <input type="checkbox" id="includeMusic" name="includeMusic" value="music" />
+    <label for="includeMusic">Have background music</label>
 
-<input type="checkbox" id="includeMusic" name="includeMusic" value="music" />
-<label for="includeMusic">Have background music</label>
+    <br>
+    <br>
 
-<br />
-
-<button id="submitButton">Click me to Submit!</button>
-<br />
+    <button id="submitButton">Click me to Submit!</button>
+    <br>
+    <br>
+</div>
 % include("footer.tpl")

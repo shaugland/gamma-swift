@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>SWIFT Taskbook</title>
+  <title>Taskbook Gamma</title>
+  <link rel="icon" type="image/x-icon" href="/static/favicon4.ico">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -11,6 +12,7 @@
     tr:nth-child(even) {
       background-color: #f2f2f2;
     }
+
   </style>
   <script>
     var settings = [];
@@ -35,7 +37,7 @@
     })
   </script>
 </head>
-<body>
+<body class="w3-light-grey w3-leftbar w3-rightbar w3-border-white" style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallpapercave.com%2Fwp%2Ff0VfAbM.jpg&f=1&nofb=1');">
 
 <script>
   function get_settings() {
