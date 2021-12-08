@@ -1,10 +1,10 @@
-<div class="w3-container w3-topbar w3-leftbar w3-rightbar w3-border-white w3-black w3-center" style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallpapercave.com%2Fwp%2Ff0VfAbM.jpg&f=1&nofb=1');">
-  <span class="w3-xxxlarge w3-margin"><b>Gamma Squad's Taskbook</b></span>
+<div class="w3-container w3-topbar  w3-border-white w3-transparent w3-center">
+  <span class="w3-xxxlarge w3-margin w3-text-white" style=""><b>Taskbook Gamma <span style="font-family:Gill Sans">γ</span></b></span>
   <br />
   <span class="w3-center w3-row" style="">
     <a href="/home"><img src="/static/logo.png" height="50px" style="vertical-align: unset;";/></a>
-    <a id="settingsPage" class="material-icons" style="text-decoration: none; font-size: 50px;" href="/settings">settings</a>
-    <a class="material-icons" style="text-decoration: none; font-size: 50px;" href="/about">help</a>
+    <a id="settingsPage" class="material-icons w3-text-white" style="text-decoration: none; font-size: 50px;" href="/settings">settings</a>
+    <a class="material-icons w3-text-white" style="text-decoration: none; font-size: 50px;" href="/about">help</a>
   </span>
   <!-- <span class="w3-right" >
 
